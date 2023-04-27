@@ -1,0 +1,20 @@
+version: '3'
+services:
+  csvserver:
+    image: infracloudio/csvserver:latest
+    ports:
+      - "9393:9300"
+    environment:
+      - CSVSERVER_BORDER=${CSVSERVER_BORDER}
+    volumes:
+      - ./inputFile:/csvserver/inputdata
+    command: ["./csvserver", "/csvserver/inputdata"]
+  ############################## PART3-Prometheus Configuration  ###############################
+  prometheus: 
+    image: prom/prometheus:v2.22.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
